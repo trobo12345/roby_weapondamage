@@ -9,6 +9,10 @@ This script allows for the customization of weapon damage multipliers and includ
 - **Exceptions:** Exclude specific weapons (e.g., fists) from the headshot system.
 - **Configuration:** Easy-to-edit settings in the `shared/main.lua` file.
 
+
+https://github.com/user-attachments/assets/1df3a1fc-15e3-4ed7-940a-8ca427aab397
+
+
 ## Installation
 
 1. Download the script and place it into your `resources` folder.
