@@ -1,25 +1,43 @@
-Wait(1000)
-Roby.applyAllMultipliers()
+CreateThread(function()
+    Roby.CacheHashes()
+    Roby.applyAllMultipliers()
+    SetPedSuffersCriticalHits(PlayerPedId(), false)
+end)
 
 AddEventHandler('playerSpawned', function()
-    SetTimeout(1000, Roby.applyAllMultipliers)
+    SetTimeout(1000, function()
+        Roby.applyAllMultipliers()
+        SetPedSuffersCriticalHits(PlayerPedId(), false)
+    end)
 end)
 
 AddEventHandler('gameEventTriggered', function(eventName, data)
-    if not Roby.WeaponDamage.HeadshotOneShot then return end
     if eventName ~= 'CEventNetworkEntityDamage' then return end
-
+    
     local victim = data[1]
     local attacker = data[2]
     local weaponHash = data[3]
-    
-    if Roby.isWeaponBlockedForHeadshot(weaponHash) then return end
+    local isMelee = data[12] 
 
-    if victim and DoesEntityExist(victim) then
-        if IsEntityAPed(victim) then
-            local success, bone = GetPedLastDamageBone(victim)
-            if success and Roby.isHeadBone(bone) then
-                if not IsPedFatallyInjured(victim) then
+    if not Roby.WeaponDamage.HeadshotOneShot then return end
+    
+    if isMelee == 1 or isMelee == true then 
+        return 
+    end
+
+    if Roby.isWeaponBlockedForHeadshot(weaponHash) then 
+        return 
+    end
+
+    if victim and DoesEntityExist(victim) and IsEntityAPed(victim) then
+        local success, bone = GetPedLastDamageBone(victim)
+        
+        if success and Roby.isHeadBone(bone) then
+            if not IsPedFatallyInjured(victim) then
+                if victim == PlayerPedId() then
+                    SetEntityHealth(victim, 0)
+                else
+                    ApplyDamageToPed(victim, 1000, true)
                     SetEntityHealth(victim, 0)
                 end
             end
