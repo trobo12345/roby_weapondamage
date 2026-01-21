@@ -1,13 +1,11 @@
 CreateThread(function()
     Roby.CacheHashes()
     Roby.applyAllMultipliers()
-    SetPedSuffersCriticalHits(PlayerPedId(), false)
 end)
 
 AddEventHandler('playerSpawned', function()
     SetTimeout(1000, function()
         Roby.applyAllMultipliers()
-        SetPedSuffersCriticalHits(PlayerPedId(), false)
     end)
 end)
 
